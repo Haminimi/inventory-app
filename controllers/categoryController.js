@@ -73,10 +73,6 @@ exports.show_update_form = asyncHandler(async (req, res) => {
 });
 
 //Update
-exports.show_category_form = asyncHandler(async (req, res) => {
-	res.render('category_form', { title: 'Create category' });
-});
-//Create
 exports.update_category = [
 	//Validate and sanitize
 	body('name', 'Name must not be empty.')
@@ -112,3 +108,37 @@ exports.update_category = [
 		}
 	}),
 ];
+
+//Delete category
+//Show form
+exports.show_delete_form = asyncHandler(async (req, res) => {
+	const [category, allCategoryItems] = await Promise.all([
+		Category.findById(req.params.id).exec(),
+		Item.find({ category: req.params.id }).sort({ name: 1 }).exec(),
+	]);
+
+	res.render('category_delete', {
+		title: 'Delete category',
+		category: category,
+		items: allCategoryItems,
+	});
+});
+
+//Delete
+exports.delete_category = asyncHandler(async (req, res) => {
+	const [category, allCategoryItems] = await Promise.all([
+		Category.findById(req.params.id).exec(),
+		Item.find({ category: req.params.id }).sort({ name: 1 }).exec(),
+	]);
+
+	if (allCategoryItems.length > 0) {
+		res.render('category_delete', {
+			title: 'Delete category',
+			category: category,
+			items: allCategoryItems,
+		});
+	} else {
+		await Category.findByIdAndDelete(req.body.categoryId);
+		res.redirect('/');
+	}
+});
