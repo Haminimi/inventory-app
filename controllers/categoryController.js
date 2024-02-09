@@ -10,7 +10,7 @@ exports.index = asyncHandler(async (req, res) => {
 	res.render('index', { title: 'Homepage', categories: categories });
 });
 
-//Category
+//Show category
 exports.open_category = asyncHandler(async (req, res) => {
 	const [category, itemsInCategory] = await Promise.all([
 		Category.findById(req.params.id).exec(),
@@ -25,7 +25,7 @@ exports.open_category = asyncHandler(async (req, res) => {
 });
 
 //Create category - show form
-exports.show_form = asyncHandler(async (req, res) => {
+exports.show_category_form = asyncHandler(async (req, res) => {
 	res.render('category_form', { title: 'Create category' });
 });
 //Create
@@ -56,6 +56,59 @@ exports.create_category = [
 		} else {
 			await category.save();
 			res.redirect(category.url);
+		}
+	}),
+];
+
+//Update category
+//Show form
+exports.show_update_form = asyncHandler(async (req, res) => {
+	const category = await Category.findById(req.params.id)
+		.sort({ name: 1 })
+		.exec();
+	res.render('category_form', {
+		title: 'Update category',
+		category: category,
+	});
+});
+
+//Update
+exports.show_category_form = asyncHandler(async (req, res) => {
+	res.render('category_form', { title: 'Create category' });
+});
+//Create
+exports.update_category = [
+	//Validate and sanitize
+	body('name', 'Name must not be empty.')
+		.trim()
+		.isLength({ min: 1 })
+		.escape(),
+	body('description', 'Description must not be empty.')
+		.trim()
+		.isLength({ min: 1 })
+		.escape(),
+
+	asyncHandler(async (req, res) => {
+		const errors = validationResult(req);
+
+		const category = new Category({
+			name: req.body.name,
+			description: req.body.description,
+			_id: req.params.id,
+		});
+
+		if (!errors.isEmpty()) {
+			res.render('category_form', {
+				title: 'Create category',
+				category: category,
+			});
+		} else {
+			const updatedCategory = await Category.findByIdAndUpdate(
+				req.params.id,
+				category,
+				{}
+			);
+			res.redirect(updatedCategory.url);
 		}
 	}),
 ];
