@@ -5,10 +5,7 @@ const asyncHandler = require('express-async-handler');
 
 //Show item
 exports.open_item = asyncHandler(async (req, res) => {
-	const item = await Item.findById(req.params.id)
-		.populate('category')
-		.sort({ name: 1 })
-		.exec();
+	const item = await Item.findById(req.params.id).populate('category').exec();
 
 	res.render('item', { title: item.name, item });
 });
@@ -138,3 +135,30 @@ exports.update_item = [
 		}
 	}),
 ];
+
+//Delete item
+//Show form
+exports.show_delete_form = asyncHandler(async (req, res) => {
+	const item = await Item.findById(req.params.id).exec();
+
+	if (!item) {
+		res.redirect('/items');
+	} else {
+		res.render('item_delete', {
+			title: 'Delete item',
+			item: item,
+		});
+	}
+});
+
+//Delete
+exports.delete_item = asyncHandler(async (req, res) => {
+	const item = await Item.findById(req.params.id).exec();
+
+	if (!item) {
+		res.redirect('/items');
+	} else {
+		await Item.findByIdAndDelete(req.body.itemId).exec();
+		res.redirect('/items');
+	}
+});
