@@ -3,6 +3,16 @@ const Item = require('../models/item');
 const { body, validationResult } = require('express-validator');
 const asyncHandler = require('express-async-handler');
 
+//All items
+exports.items = asyncHandler(async (req, res) => {
+	const items = await Item.find()
+		.populate('category')
+		.sort({ name: 1 })
+		.exec();
+
+	res.render('items', { title: 'All items', items: items });
+});
+
 //Show item
 exports.open_item = asyncHandler(async (req, res) => {
 	const item = await Item.findById(req.params.id).populate('category').exec();
