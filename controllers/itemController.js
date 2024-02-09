@@ -68,3 +68,73 @@ exports.create_item = [
 		}
 	}),
 ];
+
+//Update item
+//Show form
+exports.show_update_form = asyncHandler(async (req, res) => {
+	const [item, categories] = await Promise.all([
+		Item.findById(req.params.id).exec(),
+		Category.find().sort({ name: 1 }).exec(),
+	]);
+	res.render('item_form', {
+		title: 'Update item',
+		categories: categories,
+		item: item,
+	});
+});
+
+//Update
+exports.update_item = [
+	//Validate and sanitize
+	body('name', 'Name must not be empty.')
+		.trim()
+		.isLength({ min: 1 })
+		.escape(),
+	body('description', 'Description must not be empty.')
+		.trim()
+		.isLength({ min: 1 })
+		.escape(),
+	body('category', 'Category must not be empty.')
+		.trim()
+		.isLength({ min: 1 })
+		.escape(),
+	body('price', 'Price must not be empty.')
+		.trim()
+		.isLength({ min: 1 })
+		.escape(),
+	body('inStock', 'In stock field must not be empty.')
+		.trim()
+		.isLength({ min: 1 })
+		.escape(),
+
+	asyncHandler(async (req, res) => {
+		const errors = validationResult(req);
+
+		const item = new Item({
+			name: req.body.name,
+			description: req.body.description,
+			category: req.body.category,
+			price: req.body.price,
+			inStock: req.body.inStock,
+			_id: req.params.id,
+		});
+
+		if (!errors.isEmpty()) {
+			const categories = await Category.find().sort({ name: 1 }).exec();
+
+			res.render('item_form', {
+				title: 'Create item',
+				item: item,
+				categories: categories,
+				errors: errors.array(),
+			});
+		} else {
+			const updatedItem = await Item.findByIdAndUpdate(
+				req.params.id,
+				item,
+				{}
+			);
+			res.redirect(updatedItem.url);
+		}
+	}),
+];
