@@ -12,3 +12,59 @@ exports.open_item = asyncHandler(async (req, res) => {
 
 	res.render('item', { title: item.name, item });
 });
+
+//Create item - show form
+exports.show_item_form = asyncHandler(async (req, res) => {
+	const categories = await Category.find().sort({ name: 1 }).exec();
+	res.render('item_form', { title: 'Create item', categories: categories });
+});
+//Create
+exports.create_item = [
+	//Validate and sanitize
+	body('name', 'Name must not be empty.')
+		.trim()
+		.isLength({ min: 1 })
+		.escape(),
+	body('description', 'Description must not be empty.')
+		.trim()
+		.isLength({ min: 1 })
+		.escape(),
+	body('category', 'Category must not be empty.')
+		.trim()
+		.isLength({ min: 1 })
+		.escape(),
+	body('price', 'Price must not be empty.')
+		.trim()
+		.isLength({ min: 1 })
+		.escape(),
+	body('inStock', 'In stock field must not be empty.')
+		.trim()
+		.isLength({ min: 1 })
+		.escape(),
+
+	asyncHandler(async (req, res) => {
+		const errors = validationResult(req);
+
+		const item = new Item({
+			name: req.body.name,
+			description: req.body.description,
+			category: req.body.category,
+			price: req.body.price,
+			inStock: req.body.inStock,
+		});
+
+		if (!errors.isEmpty()) {
+			const categories = await Category.find().sort({ name: 1 }).exec();
+
+			res.render('item_form', {
+				title: 'Create item',
+				item: item,
+				categories: categories,
+				errors: errors.array(),
+			});
+		} else {
+			await item.save();
+			res.redirect(item.url);
+		}
+	}),
+];
