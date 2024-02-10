@@ -180,3 +180,12 @@ img {
 	height: 25%;
 	font-size: 17px;
 }
+
+.category-h1 {
+	font-size: 40px;
+}
+
+.category-description {
+	margin-bottom: 10px;
+	font-style: italic;
+}
