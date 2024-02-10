@@ -1,0 +1,22 @@
+extends layout
+
+block content
+    div.main
+        div.form-container
+            h1= title
+            form(method='POST', enctype='multipart/form-data')
+                div.form-group
+                    label(for='name') Name:
+                    input#name.form-input(type='text', placeholder='Name of category' name='name' required value=(category===undefined ? '' : category.name))
+                    = undefined===book ? '' : book.summary
+                div.form-group
+                    label(for='description') Description:
+                    textarea#description.form-input(placeholder='Awesome category...' name='description' required)=category===undefined ? '' : category.description
+                div.form-group
+                    label(for='image').add-image-button Add Image
+                    input#image.form-input(type='file' name='image' hidden='true')
+                button(type='submit').submit-button Submit
+            if errors
+                div.error-list
+                    for error in errors
+                        p!= '* ' + error.msg
