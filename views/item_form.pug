@@ -1,0 +1,39 @@
+extends layout
+
+block content
+    div.main
+        div.form-container
+            h1= title
+            form(method='POST', enctype='multipart/form-data')
+                div.form-group
+                    label(for='name') Name:
+                    input#name.form-input(type='text', placeholder='Name of item' name='name' required value=(item===undefined ? '' : item.name))
+                div.form-group
+                    label(for='description') Description:
+                    textarea#description.form-input(placeholder='Awesome item...' name='description' required)=item===undefined ? '' : item.description
+                div.form-group
+                    label(for='category') Category:
+                    select#category.form-input(name='category' required)
+                        option(value='') Select a category
+                        for category in categories
+                            if item
+                                if category._id.toString()===item.category._id.toString()
+                                    option(value=category._id selected) #{category.name}
+                                else
+                                    option(value=category._id) #{category.name}
+                            else
+                                option(value=category._id) #{category.name}
+                div.form-group
+                    label(for='price') Price:
+                    input#price.form-input(type='number', placeholder='Price of item in $' name='price' required min='0' step='0.01' value=(item===undefined ? '' : item.price))
+                div.form-group
+                    label(for='in-stock') In stock:
+                    input#in-stock.form-input(type='number', placeholder='Number of items in stock' name='inStock' required min='0' value=(item===undefined ? '' : item.inStock))
+                div.form-group
+                    label(for='image').add-image-button Add Image
+                    input#image.form-input(type='file' name='image' hidden='true')
+                button(type='submit').submit-button Submit
+            if errors
+                div.error-list
+                    for error in errors
+                        p!= '* ' + error.msg
