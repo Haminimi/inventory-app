@@ -283,3 +283,25 @@ select {
 option {
 	font-size: 20px;
 }
+
+.footer {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 20px;
+}
+
+.github-link-container {
+	transition: transform 0.15s linear;
+}
+
+.github-link-container:hover {
+	transform: scale(1.1);
+}
+
+.github-link:hover {
+	text-decoration: none;
+}
+
+.devicon-github-original {
+	font-size: 40px;
+}
