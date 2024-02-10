@@ -116,3 +116,9 @@ a:hover {
 	display: flex;
 	gap: 30px;
 }
+
+.main {
+	min-height: 75vh;
+	padding: 20px;
+	padding-bottom: 40px;
+}
