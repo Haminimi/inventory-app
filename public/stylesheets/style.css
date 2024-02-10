@@ -189,3 +189,23 @@ img {
 	margin-bottom: 10px;
 	font-style: italic;
 }
+
+.item {
+	display: flex;
+	justify-content: space-between;
+}
+
+.item-description {
+	font-size: 22px;
+	font-style: italic;
+}
+
+.item-field-title {
+	font-size: 22px;
+}
+
+.item-page-image-container {
+	width: 350px;
+	border-radius: 2px;
+	border: 2px solid darkslategray;
+}
