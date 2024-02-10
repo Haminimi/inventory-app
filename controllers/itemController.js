@@ -2,6 +2,7 @@ const Category = require('../models/category');
 const Item = require('../models/item');
 const { body, validationResult } = require('express-validator');
 const asyncHandler = require('express-async-handler');
+const upload = require('../upload');
 
 //All items
 exports.items = asyncHandler(async (req, res) => {
@@ -27,19 +28,21 @@ exports.show_item_form = asyncHandler(async (req, res) => {
 });
 //Create
 exports.create_item = [
+	upload.single('image'),
+
 	//Validate and sanitize
 	body('name', 'Name must not be empty.')
 		.trim()
 		.isLength({ min: 1 })
-		.escape(),
+		.blacklist('<>&/'),
 	body('description', 'Description must not be empty.')
 		.trim()
 		.isLength({ min: 1 })
-		.escape(),
+		.blacklist('<>&/'),
 	body('category', 'Category must not be empty.')
 		.trim()
 		.isLength({ min: 1 })
-		.escape(),
+		.blacklist('<>&/'),
 	body('price', 'Price must not be empty.')
 		.trim()
 		.isLength({ min: 1 })
@@ -52,12 +55,18 @@ exports.create_item = [
 	asyncHandler(async (req, res) => {
 		const errors = validationResult(req);
 
+		const uploadedFile = req.file;
+		const filePath = uploadedFile
+			? '/uploads/' + uploadedFile.filename
+			: '';
+
 		const item = new Item({
 			name: req.body.name,
 			description: req.body.description,
 			category: req.body.category,
 			price: req.body.price,
 			inStock: req.body.inStock,
+			image: filePath,
 		});
 
 		if (!errors.isEmpty()) {
@@ -92,19 +101,21 @@ exports.show_update_form = asyncHandler(async (req, res) => {
 
 //Update
 exports.update_item = [
+	upload.single('image'),
+
 	//Validate and sanitize
 	body('name', 'Name must not be empty.')
 		.trim()
 		.isLength({ min: 1 })
-		.escape(),
+		.blacklist('<>&/'),
 	body('description', 'Description must not be empty.')
 		.trim()
 		.isLength({ min: 1 })
-		.escape(),
+		.blacklist('<>&/'),
 	body('category', 'Category must not be empty.')
 		.trim()
 		.isLength({ min: 1 })
-		.escape(),
+		.blacklist('<>&/'),
 	body('price', 'Price must not be empty.')
 		.trim()
 		.isLength({ min: 1 })
@@ -117,14 +128,48 @@ exports.update_item = [
 	asyncHandler(async (req, res) => {
 		const errors = validationResult(req);
 
+		const uploadedFile = req.file;
+
+		//Keep the image
+		let item;
+
+		if (uploadedFile) {
+			const filePath = '/uploads/' + uploadedFile.filename;
+
+			item = new Item({
+				name: req.body.name,
+				description: req.body.description,
+				category: req.body.category,
+				price: req.body.price,
+				inStock: req.body.inStock,
+				image: filePath,
+				_id: req.params.id,
+			});
+		} else {
+			item = new Item({
+				name: req.body.name,
+				description: req.body.description,
+				category: req.body.category,
+				price: req.body.price,
+				inStock: req.body.inStock,
+				_id: req.params.id,
+			});
+		}
+
+		//This way the image is lost when a user attempt to update an item
+		/* 		const filePath = uploadedFile
+			? '/uploads/' + uploadedFile.filename
+			: '';
+
 		const item = new Item({
 			name: req.body.name,
 			description: req.body.description,
 			category: req.body.category,
 			price: req.body.price,
 			inStock: req.body.inStock,
+			image: filePath,
 			_id: req.params.id,
-		});
+		}); */
 
 		if (!errors.isEmpty()) {
 			const categories = await Category.find().sort({ name: 1 }).exec();

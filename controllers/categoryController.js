@@ -2,25 +2,37 @@ const Category = require('../models/category');
 const Item = require('../models/item');
 const { body, validationResult } = require('express-validator');
 const asyncHandler = require('express-async-handler');
+const upload = require('../upload');
 
 //Index
 exports.index = asyncHandler(async (req, res) => {
-	const categories = await Category.find().sort({ name: 1 }).exec();
+	const [categories, numberOfCategories, numberOfItems] = await Promise.all([
+		Category.find().sort({ name: 1 }).exec(),
+		Category.countDocuments().exec(),
+		Item.countDocuments().exec(),
+	]);
 
-	res.render('index', { title: 'Homepage', categories: categories });
+	res.render('index', {
+		title: 'Homepage',
+		categories: categories,
+		numberOfCategories,
+		numberOfItems,
+	});
 });
 
 //Show category
 exports.open_category = asyncHandler(async (req, res) => {
-	const [category, itemsInCategory] = await Promise.all([
+	const [category, itemsInCategory, numberOfItems] = await Promise.all([
 		Category.findById(req.params.id).exec(),
 		Item.find({ category: req.params.id }).sort({ name: 1 }).exec(),
+		Item.countDocuments({ category: req.params.id }).exec(),
 	]);
 
 	res.render('category', {
 		title: category.name,
 		category: category,
 		items: itemsInCategory,
+		numberOfItems,
 	});
 });
 
@@ -30,28 +42,37 @@ exports.show_category_form = asyncHandler(async (req, res) => {
 });
 //Create
 exports.create_category = [
+	upload.single('image'),
+
 	//Validate and sanitize
 	body('name', 'Name must not be empty.')
 		.trim()
 		.isLength({ min: 1 })
-		.escape(),
+		.blacklist('<>&/'),
 	body('description', 'Description must not be empty.')
 		.trim()
 		.isLength({ min: 1 })
-		.escape(),
+		.blacklist('<>&/'),
 
 	asyncHandler(async (req, res) => {
 		const errors = validationResult(req);
 
+		const uploadedFile = req.file;
+		const filePath = uploadedFile
+			? '/uploads/' + uploadedFile.filename
+			: '';
+
 		const category = new Category({
 			name: req.body.name,
 			description: req.body.description,
+			image: filePath,
 		});
 
 		if (!errors.isEmpty()) {
 			res.render('category_form', {
 				title: 'Create category',
 				category: category,
+				errors: errors.array(),
 			});
 		} else {
 			await category.save();
@@ -74,29 +95,60 @@ exports.show_update_form = asyncHandler(async (req, res) => {
 
 //Update
 exports.update_category = [
+	upload.single('image'),
+
 	//Validate and sanitize
 	body('name', 'Name must not be empty.')
 		.trim()
 		.isLength({ min: 1 })
-		.escape(),
+		.blacklist('<>&/'),
 	body('description', 'Description must not be empty.')
 		.trim()
 		.isLength({ min: 1 })
-		.escape(),
+		.blacklist('<>&/'),
 
 	asyncHandler(async (req, res) => {
 		const errors = validationResult(req);
 
+		const uploadedFile = req.file;
+
+		//Keep the image
+		let category;
+
+		if (uploadedFile) {
+			const filePath = '/uploads/' + uploadedFile.filename;
+
+			category = new Category({
+				name: req.body.name,
+				description: req.body.description,
+				image: filePath,
+				_id: req.params.id,
+			});
+		} else {
+			category = new Category({
+				name: req.body.name,
+				description: req.body.description,
+				_id: req.params.id,
+			});
+		}
+
+		//This way the image is lost when a user attempt to update a category
+		/* 		const filePath = uploadedFile
+			? '/uploads/' + uploadedFile.filename
+			: '';
+
 		const category = new Category({
 			name: req.body.name,
 			description: req.body.description,
+			image: filePath,
 			_id: req.params.id,
-		});
+		}); */
 
 		if (!errors.isEmpty()) {
 			res.render('category_form', {
 				title: 'Create category',
 				category: category,
+				errors: errors.array(),
 			});
 		} else {
 			const updatedCategory = await Category.findByIdAndUpdate(
