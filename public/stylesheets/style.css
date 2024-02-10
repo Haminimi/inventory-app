@@ -314,3 +314,22 @@ option {
 .devicon-github-original {
 	font-size: 40px;
 }
+
+.home-button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	bottom: 30px;
+	right: 30px;
+	width: 65px;
+	height: 65px;
+	padding: 15px;
+	border-radius: 50%;
+	background-color: darkslategray;
+}
+
+.home-icon {
+	font-size: 40px;
+	color: white;
+}
