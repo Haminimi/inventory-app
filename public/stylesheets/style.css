@@ -209,3 +209,41 @@ img {
 	border-radius: 2px;
 	border: 2px solid darkslategray;
 }
+
+.buttons {
+	display: flex;
+	justify-content: flex-end;
+	gap: 30px;
+	width: 100%;
+	margin-top: 30px;
+}
+
+button,
+.add-image-button {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 10px;
+	border: 2px solid darkslategray;
+	border-radius: 2px;
+	cursor: pointer;
+	padding: 5px 20px;
+	background-color: white;
+	color: darkslategray;
+}
+
+.add-image-button,
+.submit-button {
+	justify-content: center;
+	width: 150px;
+}
+
+.submit-button {
+	background-color: darkslategray;
+	color: white;
+}
+
+.update > a,
+.delete > a {
+	text-decoration: none;
+}
