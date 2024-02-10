@@ -154,3 +154,29 @@ img {
 	height: 25%;
 	font-size: 30px;
 }
+
+.items {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	gap: 10px;
+}
+
+.item-card {
+	height: 450px;
+	border: 2.5px solid gainsboro;
+	border-radius: 5px;
+}
+
+.item-image-container {
+	height: 75%;
+	overflow: hidden;
+	border-radius: 2px 2px 0px 0px;
+}
+
+.item-text {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 25%;
+	font-size: 17px;
+}
