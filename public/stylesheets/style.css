@@ -247,3 +247,39 @@ button,
 .delete > a {
 	text-decoration: none;
 }
+
+.form-group {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 20px;
+}
+
+input,
+select {
+	width: 20%;
+}
+
+textarea {
+	width: 30%;
+}
+
+input,
+textarea,
+select {
+	border: 2px solid gainsboro;
+	border-radius: 2px;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+	outline: 2px solid cornflowerblue;
+}
+
+select {
+	padding: 5px 5px;
+}
+
+option {
+	font-size: 20px;
+}
