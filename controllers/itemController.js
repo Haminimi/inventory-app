@@ -21,11 +21,13 @@ exports.open_item = asyncHandler(async (req, res) => {
 	res.render('item', { title: item.name, item });
 });
 
-//Create item - show form
+//Create item
+//Show form
 exports.show_item_form = asyncHandler(async (req, res) => {
 	const categories = await Category.find().sort({ name: 1 }).exec();
 	res.render('item_form', { title: 'Create item', categories: categories });
 });
+
 //Create
 exports.create_item = [
 	upload.single('image'),
@@ -130,7 +132,6 @@ exports.update_item = [
 
 		const uploadedFile = req.file;
 
-		//Keep the image
 		let item;
 
 		if (uploadedFile) {
@@ -155,21 +156,6 @@ exports.update_item = [
 				_id: req.params.id,
 			});
 		}
-
-		//This way the image is lost when a user attempt to update an item
-		/* 		const filePath = uploadedFile
-			? '/uploads/' + uploadedFile.filename
-			: '';
-
-		const item = new Item({
-			name: req.body.name,
-			description: req.body.description,
-			category: req.body.category,
-			price: req.body.price,
-			inStock: req.body.inStock,
-			image: filePath,
-			_id: req.params.id,
-		}); */
 
 		if (!errors.isEmpty()) {
 			const categories = await Category.find().sort({ name: 1 }).exec();
