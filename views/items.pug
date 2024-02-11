@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  div.main
+    h1.all-items-header= title
+    if items.length
+      div.items
+        each item in items
+          a(href=item.url)
+            div.item-card
+              div.item-image-container
+                if item.image 
+                  img(src=item.image, alt=item.name)
+                else 
+                  img(src='/images/default.jpg', alt='Default image')
+              div.item-text
+                p #{item.name}, #{item.price}$
+    else
+      p There are no items.
