@@ -333,3 +333,23 @@ option {
 	font-size: 40px;
 	color: white;
 }
+
+@media only screen and (max-width: 800px) {
+	header {
+		flex-direction: column;
+	}
+
+	input,
+	select {
+		width: 55%;
+	}
+
+	textarea {
+		width: 65%;
+	}
+
+	.item {
+		flex-direction: column;
+		gap: 15px;
+	}
+}
