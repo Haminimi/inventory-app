@@ -1,0 +1,33 @@
+extends layout
+
+block content
+  div.main
+    h1.category-h1 #{title} (#{numberOfItems})
+    h3.category-description #{category.description}
+    if items.length
+      div.items
+        each item in items
+          a(href=item.url)
+            div.item-card
+              div.item-image-container
+                if item.image 
+                  img(src=item.image, alt=item.name)
+                else 
+                  img(src='/images/default.jpg', alt='Default image')
+              div.item-text
+                p #{item.name}, #{item.price}$
+    else
+      p There are no items in this category.
+    div.buttons
+      div.update
+        a(href=category.url+'/update') 
+          button
+            | Update category 
+            span.material-symbols-outlined.update-pen
+              | edit
+      div.delete
+        a(href=category.url+'/delete') 
+          button
+            | Delete category
+            span.material-symbols-outlined.update-pen
+              | delete
