@@ -36,10 +36,12 @@ exports.open_category = asyncHandler(async (req, res) => {
 	});
 });
 
-//Create category - show form
+//Create category
+//Show form
 exports.show_category_form = asyncHandler(async (req, res) => {
 	res.render('category_form', { title: 'Create category' });
 });
+
 //Create
 exports.create_category = [
 	upload.single('image'),
@@ -84,9 +86,7 @@ exports.create_category = [
 //Update category
 //Show form
 exports.show_update_form = asyncHandler(async (req, res) => {
-	const category = await Category.findById(req.params.id)
-		.sort({ name: 1 })
-		.exec();
+	const category = await Category.findById(req.params.id).exec();
 	res.render('category_form', {
 		title: 'Update category',
 		category: category,
@@ -112,7 +112,6 @@ exports.update_category = [
 
 		const uploadedFile = req.file;
 
-		//Keep the image
 		let category;
 
 		if (uploadedFile) {
@@ -131,18 +130,6 @@ exports.update_category = [
 				_id: req.params.id,
 			});
 		}
-
-		//This way the image is lost when a user attempt to update a category
-		/* 		const filePath = uploadedFile
-			? '/uploads/' + uploadedFile.filename
-			: '';
-
-		const category = new Category({
-			name: req.body.name,
-			description: req.body.description,
-			image: filePath,
-			_id: req.params.id,
-		}); */
 
 		if (!errors.isEmpty()) {
 			res.render('category_form', {
