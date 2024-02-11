@@ -1,0 +1,36 @@
+extends layout
+
+block content
+  div.main
+    h1= title
+    .item 
+      div.item-details
+        p.item-description #{item.description} 
+        p
+          b.item-field-title Category: 
+          | #{item.category.name}
+        p 
+          b.item-field-title Price: 
+          | #{item.price}$
+        p 
+          b.item-field-title Number of items in stock: 
+          | #{item.inStock}
+      div.item-image
+        div.item-page-image-container
+                if item.image 
+                  img(src=item.image, alt=title)
+                else 
+                  img(src='/images/default.jpg', alt='Default image')
+    div.buttons
+      div.update
+        a(href=item.url+'/update') 
+          button
+            | Update item 
+            span.material-symbols-outlined.update-pen
+              | edit
+      div.delete
+        a(href=item.url+'/delete') 
+          button
+            | Delete item
+            span.material-symbols-outlined.update-pen
+              | delete
