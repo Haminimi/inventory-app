@@ -2,7 +2,7 @@
 ## Description
 A CRUD inventory management app for an imaginary store. [The project](https://www.theodinproject.com/lessons/nodejs-inventory-application) is a part of [The Odin Project](https://www.theodinproject.com/dashboard)'s Node course within [The Odin Project](https://www.theodinproject.com/dashboard)'s curriculum. The Odin Project provides a high quality web development education maintained by an open source community.
 ## Live Preview
-[The Inventory App](https://haminimi-inventory-app.glitch.me/)
+[The Inventory App](https://haminimi-inventory-app.glitch.me)
 ## Main Features
 - **Server Side Routing**
 - **CRUD**
