@@ -2,8 +2,7 @@
 ![Screenshot of the Inventory App.](/screenshot.png)
 ## Description
 A CRUD inventory management app for an imaginary store. [The project](https://www.theodinproject.com/lessons/nodejs-inventory-application) is a part of [The Odin Project](https://www.theodinproject.com/dashboard)'s Node course within [The Odin Project](https://www.theodinproject.com/dashboard)'s curriculum. The Odin Project provides a high quality web development education maintained by an open source community.
-## Live Preview
-[The Inventory App](https://haminimi-inventory-app.glitch.me).
+## [Live Preview](https://haminimi-inventory-app.glitch.me)
 ## Main Features
 - **Server Side Routing**
 - **CRUD**
@@ -50,9 +49,4 @@ A CRUD inventory management app for an imaginary store. [The project](https://ww
 - Photo by [Kelly Brito](https://unsplash.com/@hellokellybrito?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash) on [Unsplash](https://unsplash.com/photos/happy-birthday-greeting-card-on-white-surface-m_lPpYBRm9M?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash)
 - Photo by [Lea Øchel](https://unsplash.com/@lealea_leaa?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash) on [Unsplash](https://unsplash.com/photos/black-leather-zip-up-jacket-on-white-textile-nsRBbE6-YLs?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash)
 - Photo by [Inside Weather](https://unsplash.com/@insideweather?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash) on [Unsplash](https://unsplash.com/photos/red-fabric-sofa-dbH_vy7vICE?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash)
-## Author
-- [GitHub](https://github.com/Haminimi)
-- [Exercism](https://exercism.org/profiles/Haminimi)
-- [LeetCode](https://leetcode.com/Haminimi/)
-- Email: haminimi.dev@gmail.com
 ## Happy coding!
