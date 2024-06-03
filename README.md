@@ -15,6 +15,7 @@ A CRUD inventory management app for an imaginary store. [The project](https://ww
 **The project is built with:**
 - Pug
 - Node.js/Express
+- MongoDB
 - Vanilla CSS
 
 **Tools**
